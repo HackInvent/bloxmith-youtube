@@ -1,0 +1,270 @@
+[
+  {
+    "key": "enabled",
+    "type": "boolean",
+    "label": "Enable remote access",
+    "help": "Off by default. While off, no request reaches Google and the wallet is never read."
+  },
+  {
+    "key": "api_key_ref",
+    "placeholder": "secret://workspace/youtube_api_key",
+    "label": "API key secret",
+    "help": "Wallet reference holding a YouTube Data API key, used for public reads. Never the key itself."
+  },
+  {
+    "key": "secret_ref",
+    "placeholder": "secret://workspace/youtube",
+    "label": "OAuth grant secret",
+    "help": "Wallet reference holding an access token, or JSON with client_id, client_secret and refresh_token. Needed for uploads, changes, private data and channel mine."
+  },
+  {
+    "key": "read_credential",
+    "type": "select",
+    "options": [
+      "api_key",
+      "oauth"
+    ],
+    "label": "Credential for reads",
+    "help": "api_key reads public data with the API key; oauth reads with the grant, including the owner’s private and unlisted videos."
+  },
+  {
+    "key": "operation",
+    "type": "select",
+    "options": [
+      "search",
+      "video_details",
+      "channel_uploads",
+      "playlist_items",
+      "comments",
+      "watch_uploads",
+      "playlist_add",
+      "playlist_remove",
+      "upload_video",
+      "update_video"
+    ],
+    "label": "Default operation",
+    "help": "Used when a request gives no operation. playlist_add, upload_video and update_video need Allow changes; playlist_remove needs Allow playlist removals."
+  },
+  {
+    "key": "allowed_operations",
+    "type": "json",
+    "rows": 3,
+    "label": "Operations a request may choose",
+    "help": "JSON array among search, video_details, channel_uploads, playlist_items, comments, watch_uploads, playlist_add, playlist_remove, upload_video and update_video. The default operation is always allowed."
+  },
+  {
+    "key": "channel",
+    "placeholder": "@example",
+    "label": "Default channel",
+    "help": "Channel ID (UC...), @handle, channel URL or mine, used by channel_uploads, watch_uploads and the watch when a request names none."
+  },
+  {
+    "key": "list_limit",
+    "type": "integer",
+    "min": 1,
+    "max": 1000,
+    "label": "Items per listing (max)",
+    "help": "Upper bound for one listing; a request limit can only lower it."
+  },
+  {
+    "key": "allow_writes",
+    "type": "boolean",
+    "label": "Allow changes",
+    "help": "Off by default. Required for playlist_add, upload_video and update_video, and for the file input. Videos are never deleted."
+  },
+  {
+    "key": "allow_delete",
+    "type": "boolean",
+    "label": "Allow playlist removals",
+    "help": "Off by default. Required for playlist_remove, which takes an item out of a playlist; the video itself stays on YouTube."
+  },
+  {
+    "key": "upload_root",
+    "type": "directory",
+    "placeholder": "/path/to/videos",
+    "group": "write",
+    "label": "Upload source folder",
+    "help": "Local videos may only be uploaded from inside this folder. Required for upload_video; symbolic links leaving it are refused."
+  },
+  {
+    "key": "max_upload_bytes",
+    "type": "integer",
+    "min": 1048576,
+    "max": 274877906944,
+    "group": "write",
+    "label": "Upload size limit (bytes)",
+    "help": "Larger files are refused before any request. Default 268435456 (256 MiB)."
+  },
+  {
+    "key": "default_privacy",
+    "type": "select",
+    "options": [
+      "private",
+      "unlisted",
+      "public"
+    ],
+    "group": "write",
+    "label": "Default privacy",
+    "help": "Privacy of uploaded videos when a request gives none; private by default."
+  },
+  {
+    "key": "default_category_id",
+    "placeholder": "22",
+    "group": "write",
+    "label": "Default category ID",
+    "help": "YouTube video category of uploads when a request gives none, for example 22 (People & Blogs) or 27 (Education)."
+  },
+  {
+    "key": "made_for_kids",
+    "type": "boolean",
+    "group": "write",
+    "label": "Made for kids",
+    "help": "Audience declaration sent with uploads when a request gives none (selfDeclaredMadeForKids)."
+  },
+  {
+    "key": "notify_subscribers",
+    "type": "boolean",
+    "group": "write",
+    "label": "Notify subscribers",
+    "help": "Off by default. When on, YouTube may notify the channel’s subscribers about a new upload."
+  },
+  {
+    "key": "watch_enabled",
+    "type": "boolean",
+    "label": "Watch new uploads",
+    "help": "Off by default. In Active Runtime, emits each new upload of the default channel on the changed output. Existing uploads are not replayed."
+  },
+  {
+    "key": "watch_interval_sec",
+    "type": "integer",
+    "min": 300,
+    "max": 86400,
+    "group": "watch",
+    "label": "Check interval (s)",
+    "help": "Time between two checks, at least 300 seconds. Also the minimum spacing of watch_uploads requests."
+  },
+  {
+    "key": "watch_max_items",
+    "type": "integer",
+    "min": 1,
+    "max": 50,
+    "group": "watch",
+    "label": "Uploads per check (max)",
+    "help": "New uploads beyond this number wait for the next check."
+  },
+  {
+    "key": "emit_existing",
+    "type": "boolean",
+    "group": "watch",
+    "label": "Emit existing uploads at the first check",
+    "help": "Off by default: the first check only records the current uploads. On: it also emits the newest ones, up to Uploads per check."
+  },
+  {
+    "key": "page_size",
+    "type": "integer",
+    "min": 1,
+    "max": 50,
+    "advanced": true,
+    "label": "Page size",
+    "help": "Items requested per page; YouTube returns at most 50."
+  },
+  {
+    "key": "max_pages",
+    "type": "integer",
+    "min": 1,
+    "max": 50,
+    "advanced": true,
+    "label": "Pages per listing (max)",
+    "help": "Bound on the pages read by one listing, comments request or playlist lookup."
+  },
+  {
+    "key": "search_max_pages",
+    "type": "integer",
+    "min": 1,
+    "max": 10,
+    "advanced": true,
+    "label": "Search pages (max)",
+    "help": "Each search page costs 100 quota units of the 10,000 a Google Cloud project gets per day by default."
+  },
+  {
+    "key": "timeout_sec",
+    "type": "integer",
+    "min": 5,
+    "max": 900,
+    "advanced": true,
+    "label": "Operation deadline (s)",
+    "help": "Total time for one request or one watch check, token exchange and retries included."
+  },
+  {
+    "key": "upload_timeout_sec",
+    "type": "integer",
+    "min": 60,
+    "max": 43200,
+    "advanced": true,
+    "label": "Upload deadline (s)",
+    "help": "Total time for one upload_video, every chunk and resumption included."
+  },
+  {
+    "key": "upload_chunk_bytes",
+    "type": "integer",
+    "min": 262144,
+    "max": 268435456,
+    "advanced": true,
+    "label": "Upload chunk size (bytes)",
+    "help": "Bytes sent per upload request, a multiple of 262144 (256 KiB). Smaller chunks resend less data after an interruption."
+  },
+  {
+    "key": "max_retries",
+    "type": "integer",
+    "min": 0,
+    "max": 5,
+    "advanced": true,
+    "label": "Retries",
+    "help": "Reads and video updates retry after HTTP 429, a rate-limit 403, 5xx or a lost connection; playlist changes only after a rate limit; uploads resume."
+  },
+  {
+    "key": "max_retry_wait_sec",
+    "type": "integer",
+    "min": 1,
+    "max": 120,
+    "advanced": true,
+    "label": "Longest retry wait (s)",
+    "help": "A Retry-After above this value returns rate_limited instead of waiting."
+  },
+  {
+    "key": "max_request_bytes",
+    "type": "integer",
+    "min": 1024,
+    "max": 1048576,
+    "advanced": true,
+    "label": "Request size limit (bytes)",
+    "help": "Bound for one incoming request."
+  },
+  {
+    "key": "max_response_bytes",
+    "type": "integer",
+    "min": 65536,
+    "max": 33554432,
+    "advanced": true,
+    "label": "Response size limit (bytes)",
+    "help": "Larger JSON responses from Google are refused as protocol errors."
+  },
+  {
+    "key": "api_base_url",
+    "advanced": true,
+    "label": "YouTube API origin",
+    "help": "Keep https://www.googleapis.com. Another origin receives the credentials; plain HTTP only for a loopback test host."
+  },
+  {
+    "key": "oauth_base_url",
+    "advanced": true,
+    "label": "OAuth token origin",
+    "help": "Keep https://oauth2.googleapis.com. Used only with a refresh-token grant; plain HTTP only for a loopback test host."
+  },
+  {
+    "key": "ca_file",
+    "advanced": true,
+    "label": "Custom CA file",
+    "help": "Optional absolute PEM file for a privately signed HTTPS origin. TLS verification cannot be disabled."
+  }
+]
